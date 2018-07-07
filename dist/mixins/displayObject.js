@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var watchers_1 = require("../watchers");
 var vue_1 = require("vue");
+/** @namespace */
 var WATCHERS = {
     alpha: watchers_1.basicWatcher("alpha"),
     buttonMode: watchers_1.basicWatcher("buttonMode"),
