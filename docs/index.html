@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>asw-vue - Nuxt.js project</title>
@@ -7,15 +8,58 @@
   <meta name="description" content="Nuxt.js project">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <style>
+    .demo-block .meta {
+      position: relative;
+    }
+
+    .demo-block .meta>.description {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      width: auto;
+      padding: 12px;
+      border-left: none;
+    }
+
+    .demo-block .meta>.description button {
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .demo-block .meta>.highlight {
+      width: initial;
+      border-right: none;
+    }
+
+    .demo-block .meta>.highlight pre::after {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
   <div id="app"></div>
+
+  <script src="//unpkg.com/vue/dist/vue.js"></script>
+  <script src="//unpkg.com/docsify-demo-box-vue@1.0.8/dist/docsify-demo-box-vue.js"></script>
   <script>
+    var jsResources = '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>'
+    var cssResources = '@import url("//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");'
+    var bootCode = 'var globalVariable = "leon"'
+    var globalVariable = "leon"
+    var Babel = undefined // Let docsify-demo-box-vue know that Babel isn't present
+
     window.$docsify = {
       name: 'asw-vue',
-      repo: ''
+      repo: '',
+      plugins: [
+        DemoBoxVue.create(jsResources, cssResources, bootCode)
+      ]
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
 </body>
+
 </html>

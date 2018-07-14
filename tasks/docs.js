@@ -39,8 +39,14 @@ const foundDocs = new Map()
   )
 
   wrapperDocs.forEach(item => {
-    if (item.longname === "module.exports" && item.description) {
-      put(nameFromItem(item), { description: item.description })
+    if (
+      item.longname === "module.exports" &&
+      (item.description || item.examples)
+    ) {
+      put(nameFromItem(item), {
+        description: item.description,
+        examples: item.examples
+      })
     } else if (item.longname.startsWith("props.") && item.description) {
       const propName = item.longname.replace(/^props\./, "")
       putProp(item.meta.filename.replace(/\.js$/, ""), propName, {
@@ -152,162 +158,28 @@ function putProp(componentName, propName, attrs) {
 }
 
 function documentComponent(name, component) {
-  // const pixiName = name.replace(/^(.*\.)?Pixi/, "")
-  // const pixiFile = find(pixiFiles, path => path.endsWith(pixiName + ".js"))
-  // const compiledFile = find(compiledFiles, path =>
-  //   path.endsWith(pixiName + ".js")
-  // )
-
-  // let parent = component.super
-  // while (parent && parent.options.props) {
-  //   const parentName = find(
-  //     Object.keys(components),
-  //     name => components[name] === parent
-  //   )
-  //   if (parentName) {
-  //     documentComponent(parentName, parent, components)
-  //     parent = parent.super
-  //   } else {
-  //     break
-  //   }
-  // }
-
   const found = foundDocs.get(name)
 
   const markdown = found
     ? `
-${found.description}
-${found.pixiDescription}
+${found.description || ""}
+${found.pixiDescription || ""}
+${(found.examples || []).map(
+        example => "```html\n/*vue*/\n" + example + "\n```\n"
+      )}
 
-${Object.entries(found.props)
+${Object.entries(found.props || {})
         .map(
           ([prop, value]) =>
-            `<div class="pixi-prop">\n${value.description ||
-              ""}\n${value.pixiDescription || ""}\n</div>`
+            `
+<div class="pixi-prop">
+${value.description || ""}
+${value.pixiDescription || ""}
+</div>`
         )
         .join("\n")}
 `
     : ""
 
   writeFileSync(`docs/generated/${name}.md`, markdown)
-
-  // writeFileSync(
-  //   `docs/generated/${pixiName}.md`,
-  //   [result.description]
-  //     .concat(result.props.map(prop => prop.description))
-  //     .join("\n\n")
-  // )
 }
-
-// function find(list, finder) {
-//   for (let item of list) {
-//     if (finder(item)) {
-//       return item
-//     }
-//   }
-// }
-
-// function generateMarkdown(pixiName, component) {
-//   return {
-//     description: generateDescriptionMarkdown(pixiName, component),
-//     props: generatePropsMarkdown(pixiName, component)
-//   }
-// }
-
-// function generateDescriptionMarkdown(pixiName, component) {
-//   let description = ""
-
-//   const wrapperItem = find(
-//     wrapperDocs,
-//     item =>
-//       item.longname === "module.exports" &&
-//       item.meta.filename === `${pixiName}.js`
-//   )
-//   if (wrapperItem && wrapperItem.description) {
-//     description += wrapperItem.description
-//   }
-
-//   const pixiItem = find(
-//     pixiDocs,
-//     item =>
-//       item.longname.startsWith("PIXI.") &&
-//       item.longname.endsWith(pixiName) &&
-//       item.kind === "class"
-//   )
-//   if (pixiItem && pixiItem.description) {
-//     description += `\n\n<blockquote class="pixi">\n${
-//       pixiItem.description
-//     }\n</blockquote>`
-//   }
-
-//   return description
-// }
-
-// function generatePropsMarkdown(pixiName, component) {
-//   if (!component.options.props) {
-//     return []
-//   }
-
-//   let superDocs = componentDocs.get(component.super)
-//   let props = superDocs ? superDocs.props : []
-
-//   wrapperDocs.forEach(item => {
-//     if (item.longname.startsWith("props.")) {
-//       const propName = item.longname.replace(/^props\./, "")
-//       const prop = component.options.props[propName]
-//       const generated = generatePropMarkdown(propName, prop, item, pixiDocs)
-
-//       if (generated) {
-//         props.push(generated)
-//       }
-//     }
-//   })
-
-//   return props.sort((a, b) => a.propName.localeCompare(b.propName))
-// }
-
-// function generatePropMarkdown(propName, prop, compiledDocItem, pixiDocs) {
-//   if (!prop) {
-//     return ""
-//   }
-
-//   return {
-//     propName,
-//     description: `<div class="prop">
-// <h3 class="prop-name">${propName}</h3>
-// <div class="prop-type">${formatType(prop)}</div>
-// ${findPropDocs(propName, pixiDocs, compiledDocItem)}</div>\n`
-//   }
-// }
-
-// function findPropDocs(propName, pixiDocs, compiledDocItem) {
-//   let description = ""
-
-//   if (compiledDocItem.description) {
-//     description += compiledDocItem.description
-//   }
-
-//   const pixiItem = find(
-//     pixiDocs,
-//     item => item.name === propName && item.access !== "private"
-//   )
-//   if (pixiItem && pixiItem.description) {
-//     description += `<blockquote class="pixi">\n${
-//       pixiItem.description
-//     }\n</blockquote>`
-//   }
-
-//   return description
-//     ? `<div class="prop-description">\n${description}\n</div>\n`
-//     : ""
-// }
-
-// function formatType(propValue) {
-//   if (propValue.type && Array.isArray(propValue.type)) {
-//     return propValue.type.map(formatType).join(" | ")
-//   } else if (propValue.type) {
-//     return propValue.type.name
-//   } else {
-//     return propValue.name
-//   }
-// }

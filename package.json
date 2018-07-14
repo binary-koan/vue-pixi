@@ -6,7 +6,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && rollup -c --format cjs > dist/bundle.js"
+    "build": "tsc && rollup -c --format cjs -o dist/bundle.js",
+    "watch": "watch 'npm run build' src",
+    "docs": "concurrently 'npm:watch' 'npm:docs:watch' 'npm:docs:serve'",
+    "docs:build": "node tasks/docs.js",
+    "docs:watch": "watch --wait=1 'npm run docs:build' dist",
+    "docs:serve": "docsify serve docs"
   },
   "peerDependencies": {
     "pixi.js": "~4.8.0",
@@ -25,6 +30,7 @@
     "pixi.js": "^4.8.1",
     "rollup": "^0.62.0",
     "typescript": "^2.9.2",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "watch": "^1.0.2"
   }
 }

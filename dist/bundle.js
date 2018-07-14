@@ -356,6 +356,20 @@ var ResourceLoader = /** @class */ (function () {
     return ResourceLoader;
 }());
 
+/**
+ * The root component for a Pixi scene
+ *
+ * @example
+ * <template>
+ *   <pixi-scene>
+ *     <pixi-sprite></pixi-sprite>
+ *   </pixi-scene>
+ * </template>
+ *
+ * <script>
+ * export default {}
+ * </script>
+ */
 var Scene = Vue.extend({
     beforeCreate: function () {
         this.$pixiRoot = {

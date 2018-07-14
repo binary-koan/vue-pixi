@@ -1,6 +1,20 @@
 import ResourceLoader from "../resourceLoader";
 import * as PIXI from "pixi.js";
 import Vue from "vue";
+/**
+ * The root component for a Pixi scene
+ *
+ * @example
+ * <template>
+ *   <pixi-scene>
+ *     <pixi-sprite></pixi-sprite>
+ *   </pixi-scene>
+ * </template>
+ *
+ * <script>
+ * export default {}
+ * </script>
+ */
 export default Vue.extend({
     beforeCreate: function () {
         this.$pixiRoot = {
