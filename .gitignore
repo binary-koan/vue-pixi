@@ -4,5 +4,7 @@ node_modules
 # logs
 npm-debug.log
 
-# Parcel cache
-.cache
+# Rollup cache
+.rpt2_cache
+
+tmp

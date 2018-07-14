@@ -6,8 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch"
+    "build": "tsc && rollup -c --format cjs > dist/bundle.js"
   },
   "peerDependencies": {
     "pixi.js": "~4.8.0",
@@ -15,8 +14,16 @@
   },
   "devDependencies": {
     "@types/pixi.js": "^4.8.0",
+    "axios": "^0.18.0",
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "concurrently": "^3.6.0",
+    "docsify": "^4.7.0",
+    "extract-zip": "^1.6.7",
+    "glob": "^7.1.2",
+    "jsdoc": "^3.5.5",
+    "jsdom": "^11.11.0",
     "pixi.js": "^4.8.1",
+    "rollup": "^0.62.0",
     "typescript": "^2.9.2",
     "vue": "^2.5.16"
   }

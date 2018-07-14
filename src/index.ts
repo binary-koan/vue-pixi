@@ -1,3 +1,6 @@
-export * from "./components";
+import "./typeHelpers"
 
-export { default as PixiScene } from "./scene";
+import * as extras from "./extras"
+
+export * from "./core"
+export { extras }
