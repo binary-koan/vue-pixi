@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && rollup -c --format cjs -o dist/bundle.js",
+    "build": "tsc && rollup -c --format umd -o dist/bundle.js && cp dist/bundle.js docs",
     "watch": "watch 'npm run build' src",
     "docs": "concurrently 'npm:watch' 'npm:docs:watch' 'npm:docs:serve'",
     "docs:build": "node tasks/docs.js",

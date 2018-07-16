@@ -23,7 +23,7 @@ const plugin: PluginObject<void> = {
 }
 
 function kebabCase(string: string) {
-  return string.replace(/(.)(A-Z)/, "$1-$2").toLowerCase()
+  return string.replace(/(.)([A-Z])/g, "$1-$2").toLowerCase()
 }
 
 export default plugin

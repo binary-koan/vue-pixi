@@ -43,12 +43,17 @@
   <div id="app"></div>
 
   <script src="//unpkg.com/vue/dist/vue.js"></script>
+  <script src="//unpkg.com/pixi.js@4.8.1/dist/pixi.js"></script>
   <script src="//unpkg.com/docsify-demo-box-vue@1.0.8/dist/docsify-demo-box-vue.js"></script>
+  <script src="bundle.js"></script>
   <script>
-    var jsResources = '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>'
+    var jsResources =
+      '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>\n' +
+      '<scr' + 'ipt src="//unpkg.com/pixi.js@4.8.1/dist/pixi.js"></scr' + 'ipt>\n' +
+      '<scr' + 'ipt src="//binary-koan.github.io/vue-pixi/bundle.js"></scr' + 'ipt>'
     var cssResources = '@import url("//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");'
-    var bootCode = 'var globalVariable = "leon"'
-    var globalVariable = "leon"
+    var bootCode = 'Vue.use(VuePixi.default)'
+    Vue.use(VuePixi.default)
     var Babel = undefined // Let docsify-demo-box-vue know that Babel isn't present
 
     window.$docsify = {

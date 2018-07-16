@@ -14,6 +14,6 @@ var plugin = {
     }
 };
 function kebabCase(string) {
-    return string.replace(/(.)(A-Z)/, "$1-$2").toLowerCase();
+    return string.replace(/(.)([A-Z])/g, "$1-$2").toLowerCase();
 }
 export default plugin;
