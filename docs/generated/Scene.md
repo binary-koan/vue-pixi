@@ -1,4 +1,3 @@
-
 The root component for a Pixi scene
 
 ```html
@@ -13,6 +12,3 @@ The root component for a Pixi scene
 export default {}
 </script>
 ```
-
-
-
