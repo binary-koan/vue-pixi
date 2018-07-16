@@ -406,7 +406,31 @@ var Scene = Vue.extend({
     }
 });
 
+
+
+var core = /*#__PURE__*/Object.freeze({
+    PixiScene: Scene,
+    PixiDisplayObject: DisplayObject,
+    PixiContainer: Container,
+    PixiSprite: Sprite
+});
+
+var plugin = {
+    install: function (Vue$$1) {
+        Object.keys(core).forEach(function (key) {
+            Vue$$1.component(kebabCase(key), core[key]);
+        });
+        Object.keys(extras).forEach(function (key) {
+            Vue$$1.component(kebabCase(key).replace("pixi-", "pixi-extras-"), extras[key]);
+        });
+    }
+};
+function kebabCase(string) {
+    return string.replace(/(.)(A-Z)/, "$1-$2").toLowerCase();
+}
+
 exports.extras = extras;
+exports.default = plugin;
 exports.PixiScene = Scene;
 exports.PixiDisplayObject = DisplayObject;
 exports.PixiContainer = Container;
