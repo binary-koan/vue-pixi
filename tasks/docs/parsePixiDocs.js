@@ -31,9 +31,28 @@ module.exports = async function(docs) {
       docs.update(nameFromItem(item), {
         pixiDescription: item.description || item.classdesc
       })
+      addConstructorOptions(item, docs)
     } else if (item.kind === "member" && item.description) {
       docs.updateProp(nameFromItem(item), item.name, {
-        pixiDescription: item.description
+        pixiDescription: item.description,
+        pixiDefault:
+          item.defaultvalue === undefined
+            ? undefined
+            : String(item.defaultvalue)
+      })
+    }
+  })
+}
+
+function addConstructorOptions(item, docs) {
+  ;(item.params || []).forEach(param => {
+    if (param.name.startsWith("options.") && param.description) {
+      docs.updateProp(nameFromItem(item), param.name.replace("options.", ""), {
+        pixiInitializerDescription: param.description,
+        pixiDefault:
+          param.defaultvalue === undefined
+            ? undefined
+            : String(param.defaultvalue)
       })
     }
   })

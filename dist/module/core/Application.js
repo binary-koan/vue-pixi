@@ -6,9 +6,9 @@ import Vue from "vue";
  *
  * @example
  * <template>
- *   <pixi-scene>
+ *   <pixi-application width="400" height="300">
  *     <pixi-sprite></pixi-sprite>
- *   </pixi-scene>
+ *   </pixi-application>
  * </template>
  *
  * <script>
@@ -16,6 +16,23 @@ import Vue from "vue";
  * </script>
  */
 export default Vue.extend({
+    props: {
+        autoStart: { type: Boolean },
+        width: { type: Number },
+        height: { type: Number },
+        transparent: { type: Boolean },
+        antialias: { type: Boolean },
+        resolution: { type: Number },
+        forceCanvas: { type: Boolean },
+        backgroundColor: { type: Number },
+        clearBeforeRender: { type: Boolean },
+        roundPixels: { type: Boolean },
+        forceFXAA: { type: Boolean },
+        legacy: { type: Boolean },
+        powerPreference: { type: String },
+        sharedTicker: { type: Boolean },
+        sharedLoader: { type: Boolean }
+    },
     beforeCreate: function () {
         this.$pixiRoot = {
             loader: new ResourceLoader(),
@@ -24,7 +41,7 @@ export default Vue.extend({
         };
     },
     mounted: function () {
-        var app = new PIXI.Application({ view: this.$el });
+        var app = new PIXI.Application(Object.assign({ view: this.$el }, this.$props));
         app.stage.addChild(this.$pixiRoot.root);
         this.$pixiRoot.app = app;
     },
@@ -35,7 +52,7 @@ export default Vue.extend({
             app.destroy();
     },
     render: function (h) {
-        return h("canvas", this.$slots.default);
+        return h("canvas", { attrs: { width: this.width, height: this.height } }, this.$slots.default);
     },
     methods: {
         $pixiLoadResource: function (name, callback) {

@@ -360,16 +360,33 @@
      *
      * @example
      * <template>
-     *   <pixi-scene>
+     *   <pixi-application width="400" height="300">
      *     <pixi-sprite></pixi-sprite>
-     *   </pixi-scene>
+     *   </pixi-application>
      * </template>
      *
      * <script>
      * export default {}
      * </script>
      */
-    var Scene = Vue.extend({
+    var Application = Vue.extend({
+        props: {
+            autoStart: { type: Boolean },
+            width: { type: Number },
+            height: { type: Number },
+            transparent: { type: Boolean },
+            antialias: { type: Boolean },
+            resolution: { type: Number },
+            forceCanvas: { type: Boolean },
+            backgroundColor: { type: Number },
+            clearBeforeRender: { type: Boolean },
+            roundPixels: { type: Boolean },
+            forceFXAA: { type: Boolean },
+            legacy: { type: Boolean },
+            powerPreference: { type: String },
+            sharedTicker: { type: Boolean },
+            sharedLoader: { type: Boolean }
+        },
         beforeCreate: function () {
             this.$pixiRoot = {
                 loader: new ResourceLoader(),
@@ -378,7 +395,7 @@
             };
         },
         mounted: function () {
-            var app = new PIXI.Application({ view: this.$el });
+            var app = new PIXI.Application(Object.assign({ view: this.$el }, this.$props));
             app.stage.addChild(this.$pixiRoot.root);
             this.$pixiRoot.app = app;
         },
@@ -389,7 +406,7 @@
                 app.destroy();
         },
         render: function (h) {
-            return h("canvas", this.$slots.default);
+            return h("canvas", { attrs: { width: this.width, height: this.height } }, this.$slots.default);
         },
         methods: {
             $pixiLoadResource: function (name, callback) {
@@ -408,7 +425,7 @@
 
 
     var core = /*#__PURE__*/Object.freeze({
-        PixiScene: Scene,
+        PixiApplication: Application,
         PixiDisplayObject: DisplayObject,
         PixiContainer: Container,
         PixiSprite: Sprite
@@ -430,7 +447,7 @@
 
     exports.extras = extras;
     exports.default = plugin;
-    exports.PixiScene = Scene;
+    exports.PixiApplication = Application;
     exports.PixiDisplayObject = DisplayObject;
     exports.PixiContainer = Container;
     exports.PixiSprite = Sprite;

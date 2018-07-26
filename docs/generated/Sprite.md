@@ -9,7 +9,9 @@ Test comment on export
 <div class='prop-pixi-description'>
 <p>The blend mode to be applied to the sprite. Apply a value of <code>PIXI.BLEND_MODES.NORMAL</code> to reset the blend mode.</p>
 </div>
-</div>
+<div class='prop-pixi-default'>
+PIXI.BLEND_MODES.NORMAL
+</div></div>
 
 <div class='prop'>
 <div class='name'>shader</div>
@@ -24,7 +26,9 @@ Test comment on export
 <p>Plugin that is responsible for rendering this element.
 Allows to customize the rendering process without overriding '_renderWebGL' &amp; '_renderCanvas' methods.</p>
 </div>
-</div>
+<div class='prop-pixi-default'>
+'sprite'
+</div></div>
 
 <div class='prop'>
 <div class='name'>width</div>
@@ -56,7 +60,9 @@ Setting the anchor to 1,1 would mean the texture's origin point will be the bott
 <p>The tint applied to the sprite. This is a hex value.
 A value of 0xFFFFFF will remove any tint effect.</p>
 </div>
-</div>
+<div class='prop-pixi-default'>
+0xFFFFFF
+</div></div>
 
 <div class='prop'>
 <div class='name'>texture</div>

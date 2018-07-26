@@ -15,14 +15,18 @@ let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 <div class='prop-pixi-description'>
 <p>The speed that the AnimatedSprite will play at. Higher is faster, lower is slower</p>
 </div>
-</div>
+<div class='prop-pixi-default'>
+1
+</div></div>
 
 <div class='prop'>
 <div class='name'>loop</div>
 <div class='prop-pixi-description'>
 <p>Whether or not the animate sprite repeats after playing.</p>
 </div>
-</div>
+<div class='prop-pixi-default'>
+true
+</div></div>
 
 <div class='prop'>
 <div class='name'>onComplete</div>
