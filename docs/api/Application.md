@@ -1,8 +1,16 @@
+<header>
+<h1>PixiApplication
+</h1>
+
+</header>
+
 The root component for a Pixi scene
 
 <p>Convenience class to create a new PIXI application.
 This class automatically creates the renderer, ticker
 and root container.</p>
+
+## Examples
 
 ```html
 /*vue*/
@@ -18,6 +26,9 @@ export default {}
 ```
 
 
+
+## Props
+
 <div class='prop'>
 <div class='name'>autoStart</div>
 <div class='prop-pixi-description is-initializer'>
@@ -28,7 +39,8 @@ export default {}
 </div>
 <div class='prop-pixi-default'>
 true
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>width</div>
@@ -38,7 +50,8 @@ true
 </div>
 <div class='prop-pixi-default'>
 800
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>height</div>
@@ -48,7 +61,8 @@ true
 </div>
 <div class='prop-pixi-default'>
 600
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>transparent</div>
@@ -58,7 +72,8 @@ true
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>antialias</div>
@@ -68,7 +83,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>resolution</div>
@@ -78,7 +94,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 1
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>forceCanvas</div>
@@ -88,7 +105,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>backgroundColor</div>
@@ -99,7 +117,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 0x000000
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>clearBeforeRender</div>
@@ -110,7 +129,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 true
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>roundPixels</div>
@@ -121,7 +141,8 @@ true
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>forceFXAA</div>
@@ -132,7 +153,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>legacy</div>
@@ -143,7 +165,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>powerPreference</div>
@@ -162,7 +185,8 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>sharedLoader</div>
@@ -172,4 +196,5 @@ false
 </div>
 <div class='prop-pixi-default'>
 false
-</div></div>
+</div>
+</div>

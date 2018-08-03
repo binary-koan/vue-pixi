@@ -1,3 +1,9 @@
+<header>
+<h1>extras.PixiAnimatedSprite
+</h1>
+
+<p class='extends'>extends Sprite</p></header>
+
 <p>An AnimatedSprite is a simple way to display an animation depicted by a list of textures.</p>
 <pre class="prettyprint source lang-js"><code>let alienImages = [&quot;image_sequence_01.png&quot;,&quot;image_sequence_02.png&quot;,&quot;image_sequence_03.png&quot;,&quot;image_sequence_04.png&quot;];
 let textureArray = [];
@@ -10,6 +16,8 @@ for (let i=0; i &lt; 4; i++)
 
 let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 
+## Props
+
 <div class='prop'>
 <div class='name'>animationSpeed</div>
 <div class='prop-pixi-description'>
@@ -17,7 +25,8 @@ let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 </div>
 <div class='prop-pixi-default'>
 1
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>loop</div>
@@ -26,7 +35,8 @@ let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 </div>
 <div class='prop-pixi-default'>
 true
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>onComplete</div>

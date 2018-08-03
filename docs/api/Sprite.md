@@ -1,8 +1,16 @@
+<header>
+<h1>PixiSprite
+</h1>
+
+<p class='extends'>extends Container</p></header>
+
 Test comment on export
 
 <p>The Sprite object is the base for all textured objects that are rendered to the screen</p>
 <p>A sprite can be created directly from an image like this:</p>
 <pre class="prettyprint source lang-js"><code>let sprite = new PIXI.Sprite.fromImage('assets/image.png');</code></pre>
+
+## Props
 
 <div class='prop'>
 <div class='name'>blendMode</div>
@@ -11,7 +19,8 @@ Test comment on export
 </div>
 <div class='prop-pixi-default'>
 PIXI.BLEND_MODES.NORMAL
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>shader</div>
@@ -28,7 +37,8 @@ Allows to customize the rendering process without overriding '_renderWebGL' &amp
 </div>
 <div class='prop-pixi-default'>
 'sprite'
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>width</div>
@@ -62,7 +72,8 @@ A value of 0xFFFFFF will remove any tint effect.</p>
 </div>
 <div class='prop-pixi-default'>
 0xFFFFFF
-</div></div>
+</div>
+</div>
 
 <div class='prop'>
 <div class='name'>texture</div>

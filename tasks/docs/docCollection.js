@@ -7,6 +7,14 @@ module.exports = class DocCollection {
     return this.docs.get(componentName)
   }
 
+  forComponent(component) {
+    for (let [name, options] of this.docs.entries()) {
+      if (options.component === component) {
+        return Object.assign({ name }, options)
+      }
+    }
+  }
+
   add({ name, namespace, component }) {
     this.docs.set(name, { namespace, component })
   }
@@ -43,9 +51,9 @@ module.exports = class DocCollection {
     this.docs.set(componentName, Object.assign(doc, { props }))
   }
 
-  forEach(callback) {
-    this.docs.forEach((options, name) =>
-      callback(Object.assign({ name }, options))
+  entries() {
+    return Array.from(this.docs.entries()).map(([name, options]) =>
+      Object.assign({ name }, options)
     )
   }
 }

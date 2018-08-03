@@ -1,5 +1,13 @@
+<header>
+<h1>PixiDisplayObject
+</h1>
+
+</header>
+
 <p>The base class for all objects that are rendered on the screen.
 This is an abstract class and should not be used on its own rather it should be extended.</p>
+
+## Props
 
 <div class='prop'>
 <div class='name'>transform</div>
