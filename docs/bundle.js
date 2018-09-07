@@ -218,7 +218,18 @@
         }
     });
 
-    /** Test comment on export */
+    /**
+     * @example
+     * <template>
+     *   <pixi-application :width="300" :height="300">
+     *     <pixi-sprite texture="assets/sample.png" :width="300" :height="300"></pixi-sprite>
+     *   </pixi-application>
+     * </template>
+     *
+     * <script>
+     * export default {}
+     * </script>
+     */
     var Sprite = Container.extend({
         pixiConstructor: function () { return new PIXI.Sprite(); },
         props: {
@@ -371,7 +382,7 @@
      */
     var Application = Vue.extend({
         props: {
-            autoStart: { type: Boolean },
+            autoStart: { type: Boolean, default: true },
             width: { type: Number },
             height: { type: Number },
             transparent: { type: Boolean },
@@ -379,7 +390,7 @@
             resolution: { type: Number },
             forceCanvas: { type: Boolean },
             backgroundColor: { type: Number },
-            clearBeforeRender: { type: Boolean },
+            clearBeforeRender: { type: Boolean, default: true },
             roundPixels: { type: Boolean },
             forceFXAA: { type: Boolean },
             legacy: { type: Boolean },

@@ -12,12 +12,17 @@
     :root {
       --theme-color: #c2185b;
       --theme-color-strong: #a91952;
+
+      --heading-h2-margin: 3rem 0 1.5rem 0;
+      --heading-h2-padding: 0;
+      --heading-h2-border-style: none;
+      --table-cell-border-width: 1px;
     }
 
     .demo-block.demo-box,
     .demo-block.demo-box:hover {
       border: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     }
 
     .demo-block .source {
@@ -34,7 +39,7 @@
       align-items: center;
       justify-content: center;
       border-top: none;
-      background: var(--mono-tint1);
+      background: var(--mono-tint2);
       color: var(--base-color);
       font-size: var(--font-size-s);
       font-weight: bold;
@@ -95,6 +100,71 @@
 
     .demo-block .meta>.highlight pre::after {
       display: none;
+    }
+
+    .markdown-section td:first-child {
+      border-left: none;
+    }
+
+    .markdown-section td:last-child {
+      border-right: none;
+    }
+
+    .markdown-section .pixi-description {
+      padding: 0.5rem;
+      border-top: 1px solid var(--table-cell-border-color);
+      border-bottom: 1px solid var(--table-cell-border-color);
+      background-color: var(--table-row-odd-background);
+    }
+
+    .markdown-section .pixi-description>p:first-child {
+      margin-top: 0;
+    }
+
+    .markdown-section .pixi-description>p:last-child {
+      margin-bottom: 0;
+    }
+
+    .markdown-section .pixi-description>pre {
+      /* It's not useful to show plain Pixi examples */
+      display: none;
+    }
+
+    .markdown-section .pixi-description::after {
+      content: 'PIXI';
+      display: block;
+      text-align: right;
+      font-size: var(--font-size-s);
+      font-weight: bold;
+      color: var(--mono-tint1);
+    }
+
+    .markdown-section .pixi-description.is-initializer::after {
+      content: 'PIXI (init only)';
+    }
+
+    .markdown-section .prop-list .pixi-description {
+      padding: 0;
+      background-color: transparent;
+      border: none;
+    }
+
+    .markdown-section .prop-list td {
+      vertical-align: top;
+    }
+
+    .markdown-section .prop-default {
+      margin-top: 0;
+      margin-bottom: 0;
+      line-height: 1.25;
+      color: var(--mono-shade1);
+    }
+
+    .markdown-section .prop-default code:not([class*="lang-"]):not([class*="language-"]) {
+      margin: 0;
+      padding: 0;
+      background: none;
+      color: inherit;
     }
   </style>
 </head>

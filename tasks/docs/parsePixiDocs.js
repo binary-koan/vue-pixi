@@ -38,7 +38,8 @@ module.exports = async function(docs) {
         pixiDefault:
           item.defaultvalue === undefined
             ? undefined
-            : String(item.defaultvalue)
+            : String(item.defaultvalue),
+        typeNames: item.type && item.type.names
       })
     }
   })

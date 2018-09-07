@@ -18,7 +18,15 @@ function header(doc, docs) {
 }
 
 function description(doc) {
-  return [doc.description, doc.pixiDescription].filter(Boolean).join("\n\n")
+  let description = `${doc.description || ""}\n`
+
+  if (doc.pixiDescription) {
+    description += `<div class='pixi-description'>\n${
+      doc.pixiDescription
+    }\n</div>\n`
+  }
+
+  return description
 }
 
 function examples(doc) {
@@ -30,35 +38,45 @@ function examples(doc) {
 }
 
 function props(doc) {
-  const propDocs = Object.entries(doc.props || {})
+  const sortedProps = Array.from(Object.entries(doc.props || {})).sort((a, b) =>
+    a[0].localeCompare(b[0])
+  )
+  const propDocs = sortedProps
     .map(([name, value]) => prop(name, value))
     .join("\n\n")
 
-  return propDocs ? `## Props\n\n${propDocs}\n` : ""
+  return propDocs
+    ? `## Props\n\n<table class="prop-list">${propDocs}</table>\n`
+    : ""
 }
 
 function prop(name, value) {
   return (
-    "<div class='prop'>\n" +
-    `<div class='name'>${name}</div>\n` +
-    (value.description
-      ? `<div class='prop-description'>\n${value.description}\n</div>\n`
-      : "") +
-    propPixiDescription(value) +
+    "<tr>\n" +
+    `<td><strong><code>${name}</code></strong></td>\n` +
+    "<td>\n" +
+    propType(value.typeNames) +
     propPixiDefault(value) +
-    "</div>"
+    "</td>\n" +
+    "<td>\n" +
+    (value.description ? `${value.description}\n` : "") +
+    propPixiDescription(value) +
+    "</td>\n" +
+    "</tr>\n"
   )
+}
+
+function propType(typeNames) {
+  return `${typeNames ? typeNames.join(" | ") : ""}\n`
 }
 
 function propPixiDescription(value) {
   if (value.pixiDescription) {
-    return `<div class='prop-pixi-description'>\n${
-      value.pixiDescription
-    }\n</div>\n`
+    return `<div class='pixi-description'>\n${value.pixiDescription}\n</div>\n`
   } else if (value.pixiInitializerDescription) {
-    return `<div class='prop-pixi-description is-initializer'>\n${
+    return `<div class='pixi-description is-initializer'>\n${
       value.pixiInitializerDescription
-    }\n<div class='prop-initializer-only'>init only</div>\n</div>\n`
+    }\n</div>\n`
   } else {
     return ""
   }
@@ -66,7 +84,9 @@ function propPixiDescription(value) {
 
 function propPixiDefault(value) {
   if (value.pixiDefault) {
-    return `<div class='prop-pixi-default'>\n${value.pixiDefault}\n</div>\n`
+    return `<p class='prop-default'><small>Default:</small>\n<br />\n<code>${
+      value.pixiDefault
+    }</code>\n</p>\n`
   } else {
     return ""
   }

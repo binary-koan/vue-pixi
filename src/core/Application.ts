@@ -18,7 +18,7 @@ import Vue, { VueConstructor } from "vue"
  */
 export default Vue.extend({
   props: {
-    autoStart: { type: Boolean },
+    autoStart: { type: Boolean, default: true },
     width: { type: Number },
     height: { type: Number },
     transparent: { type: Boolean },
@@ -26,7 +26,7 @@ export default Vue.extend({
     resolution: { type: Number },
     forceCanvas: { type: Boolean },
     backgroundColor: { type: Number },
-    clearBeforeRender: { type: Boolean },
+    clearBeforeRender: { type: Boolean, default: true },
     roundPixels: { type: Boolean },
     forceFXAA: { type: Boolean },
     legacy: { type: Boolean },

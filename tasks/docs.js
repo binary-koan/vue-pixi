@@ -49,7 +49,11 @@ function writeSidebarDoc(entries) {
     }
   })
 
-  links.sort((a, b) => a.name.localeCompare(b.name))
+  links.sort(
+    (a, b) =>
+      a.name.split(".").length - b.name.split(".").length ||
+      a.name.localeCompare(b.name)
+  )
 
   let sidebarDoc = `<!-- API -->\n* API\n`
   links.forEach(

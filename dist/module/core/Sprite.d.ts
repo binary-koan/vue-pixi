@@ -35,5 +35,16 @@ declare const _default: VueConstructor<{
     x: number;
     y: number;
 } & Vue>;
-/** Test comment on export */
+/**
+ * @example
+ * <template>
+ *   <pixi-application :width="300" :height="300">
+ *     <pixi-sprite texture="assets/sample.png" :width="300" :height="300"></pixi-sprite>
+ *   </pixi-application>
+ * </template>
+ *
+ * <script>
+ * export default {}
+ * </script>
+ */
 export default _default;

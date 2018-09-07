@@ -3,7 +3,18 @@ import { basicWatcher, generateWatchers, resourceWatcher } from "../watchers"
 import * as PIXI from "pixi.js"
 import Vue, { VueConstructor } from "vue"
 
-/** Test comment on export */
+/**
+ * @example
+ * <template>
+ *   <pixi-application :width="300" :height="300">
+ *     <pixi-sprite texture="assets/sample.png" :width="300" :height="300"></pixi-sprite>
+ *   </pixi-application>
+ * </template>
+ *
+ * <script>
+ * export default {}
+ * </script>
+ */
 export default Container.extend({
   pixiConstructor: () => new PIXI.Sprite(),
 
