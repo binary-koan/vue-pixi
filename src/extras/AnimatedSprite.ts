@@ -7,6 +7,8 @@ export default Sprite.extend({
   pixiConstructor: () => new PIXI.extras.AnimatedSprite([]),
   props: {
     animationSpeed: { type: Number },
+    /** Test comment on prop */
+    atlas: { type: String },
     loop: { type: Boolean },
     onComplete: { type: Function },
     onFrameChange: { type: Function },

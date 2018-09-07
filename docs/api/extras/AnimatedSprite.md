@@ -40,6 +40,17 @@ number
 
 
 <tr>
+<td><strong><code>atlas</code></strong></td>
+<td>
+
+</td>
+<td>
+Test comment on prop
+</td>
+</tr>
+
+
+<tr>
 <td><strong><code>loop</code></strong></td>
 <td>
 boolean

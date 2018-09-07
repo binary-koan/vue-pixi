@@ -72,7 +72,9 @@ export default Vue.extend({
     },
 
     $pixiAddChild(child: Vue) {
-      const index = this.$slots.default.indexOf(child.$vnode)
+      const index = this.$slots.default
+        .filter(vnode => !vnode.text) // Vue inserts text vnodes as spaces between components
+        .indexOf(child.$vnode)
       this.$pixiRoot!.root.addChildAt(child.$pixi!.object, index)
     },
 

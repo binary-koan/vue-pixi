@@ -59,7 +59,9 @@ export default Vue.extend({
             this.$pixiRoot.loader.load(name, callback);
         },
         $pixiAddChild: function (child) {
-            var index = this.$slots.default.indexOf(child.$vnode);
+            var index = this.$slots.default
+                .filter(function (vnode) { return !vnode.text; }) // Vue inserts text vnodes as spaces between components
+                .indexOf(child.$vnode);
             this.$pixiRoot.root.addChildAt(child.$pixi.object, index);
         },
         $pixiRemoveChild: function (child) {

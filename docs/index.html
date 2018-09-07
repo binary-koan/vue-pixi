@@ -19,14 +19,26 @@
       --table-cell-border-width: 1px;
     }
 
-    .demo-block.demo-box,
-    .demo-block.demo-box:hover {
+    .markdown-section .demo-caption {
+      font-style: italic;
+      color: var(--mono-base);
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-block.demo-box {
       border: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      margin-bottom: 2rem;
+    }
+
+    .demo-block.demo-box:hover {
+      box-shadow: 0 1px 2px var(--mono-tint3);
     }
 
     .demo-block .source {
       background-color: black;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+      overflow: hidden;
     }
 
     .demo-block .source>canvas {
@@ -56,7 +68,7 @@
 
     .demo-block.demo-box .demo-block-control:hover,
     .demo-block.demo-box .demo-block-control:focus {
-      background: var(--mono-tint2);
+      color: var(--mono-shade1);
     }
 
     .demo-block.demo-box .meta {
@@ -182,8 +194,10 @@
       '<scr' + 'ipt src="//unpkg.com/pixi.js@4.8.1/dist/pixi.js"></scr' + 'ipt>\n' +
       '<scr' + 'ipt src="//binary-koan.github.io/vue-pixi/bundle.js"></scr' + 'ipt>'
     var cssResources = '@import url("//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");'
-    var bootCode = 'Vue.use(VuePixi.default)'
+    var bootCode = 'Vue.use(VuePixi.default)\n\nPIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST'
+
     Vue.use(VuePixi.default)
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
     var Babel = undefined // Let docsify-demo-box-vue know that Babel isn't present
 

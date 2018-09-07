@@ -30,11 +30,20 @@ function description(doc) {
 }
 
 function examples(doc) {
-  const exampleDocs = (doc.examples || [])
-    .map(example => "```html\n/*vue*/\n" + example + "\n```\n")
-    .join("\n\n")
+  const exampleDocs = (doc.examples || []).map(example).join("\n\n")
 
   return exampleDocs ? `## Examples\n\n${exampleDocs}\n` : ""
+}
+
+function example(content) {
+  const lines = content.split("\n")
+  const match = /^<caption>(.+)<\/caption>$/.exec(lines[0])
+
+  const [caption, code] = match
+    ? [`<p class="demo-caption">${match[1]}</p>\n\n`, lines.slice(1).join("\n")]
+    : ["", content]
+
+  return caption + "```html\n/*vue*/\n" + code + "\n```\n"
 }
 
 function props(doc) {
