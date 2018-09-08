@@ -16,8 +16,11 @@ export default DisplayObject.extend({
     },
     methods: {
         $pixiAddChild: function (child) {
-            var index = this.$slots.default.indexOf(child.$vnode);
-            this.$pixi.object.addChildAt(child.$pixi.object, index);
+            var index = this.$slots.default
+                .filter(function (vnode) { return !vnode.text; }) // Vue inserts text vnodes as spaces between components
+                .indexOf(child.$vnode);
+            var maxValidIndex = this.$pixi.object.children.length + 1;
+            this.$pixi.object.addChildAt(child.$pixi.object, Math.min(index, maxValidIndex));
         },
         $pixiRemoveChild: function (child) {
             this.$pixi.object.removeChild(child.$pixi.object);

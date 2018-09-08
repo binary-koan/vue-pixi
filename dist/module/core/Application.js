@@ -62,7 +62,8 @@ export default Vue.extend({
             var index = this.$slots.default
                 .filter(function (vnode) { return !vnode.text; }) // Vue inserts text vnodes as spaces between components
                 .indexOf(child.$vnode);
-            this.$pixiRoot.root.addChildAt(child.$pixi.object, index);
+            var maxValidIndex = this.$pixiRoot.root.children.length + 1;
+            this.$pixiRoot.root.addChildAt(child.$pixi.object, Math.min(index, maxValidIndex));
         },
         $pixiRemoveChild: function (child) {
             this.$pixiRoot.root.removeChild(child.$pixi.object);

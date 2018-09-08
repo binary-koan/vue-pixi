@@ -230,8 +230,11 @@
         },
         methods: {
             $pixiAddChild: function (child) {
-                var index = this.$slots.default.indexOf(child.$vnode);
-                this.$pixi.object.addChildAt(child.$pixi.object, index);
+                var index = this.$slots.default
+                    .filter(function (vnode) { return !vnode.text; }) // Vue inserts text vnodes as spaces between components
+                    .indexOf(child.$vnode);
+                var maxValidIndex = this.$pixi.object.children.length + 1;
+                this.$pixi.object.addChildAt(child.$pixi.object, Math.min(index, maxValidIndex));
             },
             $pixiRemoveChild: function (child) {
                 this.$pixi.object.removeChild(child.$pixi.object);
@@ -493,7 +496,8 @@
                 var index = this.$slots.default
                     .filter(function (vnode) { return !vnode.text; }) // Vue inserts text vnodes as spaces between components
                     .indexOf(child.$vnode);
-                this.$pixiRoot.root.addChildAt(child.$pixi.object, index);
+                var maxValidIndex = this.$pixiRoot.root.children.length + 1;
+                this.$pixiRoot.root.addChildAt(child.$pixi.object, Math.min(index, maxValidIndex));
             },
             $pixiRemoveChild: function (child) {
                 this.$pixiRoot.root.removeChild(child.$pixi.object);
