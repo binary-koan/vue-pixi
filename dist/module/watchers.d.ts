@@ -9,7 +9,7 @@ export declare function generateWatchers(props: {
 }): {
     [prop: string]: WatchOptionsWithHandler<any>;
 };
-export declare function ignoreValueChange(context: Vue, name: string): boolean;
+export declare function propValueSpecified(context: Vue, name: string): boolean | undefined;
 export declare function basicWatcher(name: string): WatchOptionsWithHandler<any>;
 export declare function resourceWatcher<T>(name: string, { loadName, onLoad }: {
     loadName: (value: T) => string | undefined;

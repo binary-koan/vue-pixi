@@ -26,11 +26,10 @@ export function generateWatchers(props: {
   return watchers
 }
 
-export function ignoreValueChange(context: Vue, name: string) {
+export function propValueSpecified(context: Vue, name: string) {
   return (
-    !context.$pixi ||
-    !context.$vnode!.componentOptions!.propsData ||
-    !context.$vnode!.componentOptions!.propsData!.hasOwnProperty(name)
+    context.$vnode!.componentOptions!.propsData &&
+    context.$vnode!.componentOptions!.propsData!.hasOwnProperty(name)
   )
 }
 
@@ -38,9 +37,9 @@ export function basicWatcher(name: string): WatchOptionsWithHandler<any> {
   return {
     immediate: true,
     handler(this: Vue, value) {
-      if (ignoreValueChange(this as any, name)) return
+      if (!propValueSpecified(this as any, name)) return
 
-      this.$pixi!.object[name] = value
+      this.$pixiWithObject!(object => (object[name] = value))
     }
   }
 }
@@ -63,15 +62,13 @@ export function resourceWatcher<T>(
   onLoad =
     onLoad ||
     function(this: Vue, value, resources) {
-      this.$pixi!.object[name] = resources[value]
+      this.$pixi!.object![name] = resources[value]
     }
 
   return {
     immediate: true,
     handler(this: Vue, value) {
-      if (ignoreValueChange(this, name)) {
-        return
-      }
+      if (!propValueSpecified(this, name)) return
 
       this.$pixiLoadResource!(loadName.call(this, value), resources => {
         onLoad.call(this, value, resources)
@@ -116,23 +113,26 @@ export function eventWatcher(
   return {
     immediate: true,
     handler(this: Vue, value) {
-      if (ignoreValueChange(this, name)) return
-      const pixi = this.$pixi!
+      if (!propValueSpecified(this, name)) return
 
-      pixi.object[name] = value
+      this.$pixiWithObject!(object => {
+        const pixi = this.$pixi!
 
-      if (value) {
-        pixi.eventHandlers = {}
-        BASIC_EVENTS.forEach(event => {
-          pixi.eventHandlers![event] = this.$emit.bind(this, event)
-          pixi.object.on(event, pixi.eventHandlers![event])
-        })
-      } else if (pixi.eventHandlers) {
-        BASIC_EVENTS.forEach(event => {
-          pixi.object.off(event, pixi.eventHandlers![event])
-        })
-        pixi.eventHandlers = undefined
-      }
+        object[name] = value
+
+        if (value) {
+          pixi.eventHandlers = {}
+          BASIC_EVENTS.forEach(event => {
+            pixi.eventHandlers![event] = this.$emit.bind(this, event)
+            object.on(event, pixi.eventHandlers![event])
+          })
+        } else if (pixi.eventHandlers) {
+          BASIC_EVENTS.forEach(event => {
+            object.off(event, pixi.eventHandlers![event])
+          })
+          pixi.eventHandlers = undefined
+        }
+      })
     }
   }
 }

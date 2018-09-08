@@ -1,5 +1,5 @@
 import "./typeHelpers"
-import { VueConstructor, PluginObject } from "vue"
+import Vue, { VueConstructor, PluginObject } from "vue"
 
 import * as extras from "./extras"
 import * as core from "./core"

@@ -23,11 +23,11 @@ export default DisplayObject.extend({
   methods: {
     $pixiAddChild(child: Vue) {
       const index = this.$slots.default.indexOf(child.$vnode)
-      this.$pixi!.object.addChildAt(child.$pixi!.object, index)
+      this.$pixi!.object!.addChildAt(child.$pixi!.object, index)
     },
 
     $pixiRemoveChild(child: Vue) {
-      this.$pixi!.object.removeChild(child.$pixi!.object)
+      this.$pixi!.object!.removeChild(child.$pixi!.object)
     }
   }
 })

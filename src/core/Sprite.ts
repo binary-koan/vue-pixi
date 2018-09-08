@@ -28,11 +28,11 @@ import Vue, { VueConstructor } from "vue"
  * </script>
  */
 export default Container.extend({
-  pixiConstructor: () => new PIXI.Sprite(),
+  pixiConstructor: null,
 
   props: {
     anchor: { type: PIXI.ObservablePoint },
-    /** Test comment on prop */
+    /** Path to an atlas (JSON file) which contains the sprite's texture */
     atlas: { type: String },
     blendMode: { type: Number },
     pluginName: { type: String },
@@ -57,11 +57,14 @@ export default Container.extend({
           }
         },
         onLoad(this: Vue, value: string, resources: any) {
-          if (this.$props.atlas) {
-            this.$pixi!.object.texture =
-              resources[this.$props.atlas].textures[value]
+          const texture = this.$props.atlas
+            ? resources[this.$props.atlas].textures[value]
+            : resources[value].texture
+
+          if (this.$pixi && this.$pixi.object) {
+            this.$pixi.object.texture = texture
           } else {
-            this.$pixi!.object.texture = resources[value].texture
+            this.$pixiStartRendering!(new PIXI.Sprite(texture))
           }
         }
       }

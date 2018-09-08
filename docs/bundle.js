@@ -19,18 +19,17 @@
         });
         return watchers;
     }
-    function ignoreValueChange(context, name) {
-        return (!context.$pixi ||
-            !context.$vnode.componentOptions.propsData ||
-            !context.$vnode.componentOptions.propsData.hasOwnProperty(name));
+    function propValueSpecified(context, name) {
+        return (context.$vnode.componentOptions.propsData &&
+            context.$vnode.componentOptions.propsData.hasOwnProperty(name));
     }
     function basicWatcher(name) {
         return {
             immediate: true,
             handler: function (value) {
-                if (ignoreValueChange(this, name))
+                if (!propValueSpecified(this, name))
                     return;
-                this.$pixi.object[name] = value;
+                this.$pixiWithObject(function (object) { return (object[name] = value); });
             }
         };
     }
@@ -50,9 +49,8 @@
             immediate: true,
             handler: function (value) {
                 var _this = this;
-                if (ignoreValueChange(this, name)) {
+                if (!propValueSpecified(this, name))
                     return;
-                }
                 this.$pixiLoadResource(loadName.call(this, value), function (resources) {
                     onLoad.call(_this, value, resources);
                 });
@@ -93,23 +91,25 @@
             immediate: true,
             handler: function (value) {
                 var _this = this;
-                if (ignoreValueChange(this, name))
+                if (!propValueSpecified(this, name))
                     return;
-                var pixi = this.$pixi;
-                pixi.object[name] = value;
-                if (value) {
-                    pixi.eventHandlers = {};
-                    BASIC_EVENTS.forEach(function (event) {
-                        pixi.eventHandlers[event] = _this.$emit.bind(_this, event);
-                        pixi.object.on(event, pixi.eventHandlers[event]);
-                    });
-                }
-                else if (pixi.eventHandlers) {
-                    BASIC_EVENTS.forEach(function (event) {
-                        pixi.object.off(event, pixi.eventHandlers[event]);
-                    });
-                    pixi.eventHandlers = undefined;
-                }
+                this.$pixiWithObject(function (object) {
+                    var pixi = _this.$pixi;
+                    object[name] = value;
+                    if (value) {
+                        pixi.eventHandlers = {};
+                        BASIC_EVENTS.forEach(function (event) {
+                            pixi.eventHandlers[event] = _this.$emit.bind(_this, event);
+                            object.on(event, pixi.eventHandlers[event]);
+                        });
+                    }
+                    else if (pixi.eventHandlers) {
+                        BASIC_EVENTS.forEach(function (event) {
+                            object.off(event, pixi.eventHandlers[event]);
+                        });
+                        pixi.eventHandlers = undefined;
+                    }
+                });
             }
         };
     }
@@ -181,15 +181,36 @@
             y: basicWatcher
         }),
         beforeCreate: function () {
-            this.$pixi = { object: this.$options.pixiConstructor() };
-            this.$parent.$pixiAddChild(this);
+            if (this.$options.pixiConstructor) {
+                this.$pixiStartRendering(this.$options.pixiConstructor());
+            }
         },
         beforeDestroy: function () {
-            this.$parent.$pixiRemoveChild(this);
+            if (this.$pixi && this.$pixi.object) {
+                this.$parent.$pixiRemoveChild(this);
+            }
         },
         methods: {
+            $pixiStartRendering: function (object) {
+                if (this.$pixi && this.$pixi.object) {
+                    throw "$pixiStartRendering can only be called once";
+                }
+                this.$pixi = Object.assign({ object: object }, this.$pixi);
+                this.$emit("pixiStarted", object);
+                this.$off("pixiStarted");
+                this.$parent.$pixiAddChild(this);
+            },
+            $pixiWithObject: function (callback) {
+                if (this.$pixi && this.$pixi.object) {
+                    callback(this.$pixi.object);
+                }
+                else {
+                    this.$pixi = this.$pixi || {};
+                    this.$on("pixiStarted", callback);
+                }
+            },
             $pixiLoadResource: function (name, callback) {
-                this.$parent.$pixiLoadResource(name, callback);
+                return this.$parent.$pixiLoadResource(name, callback);
             }
         }
     });
@@ -243,10 +264,10 @@
      * </script>
      */
     var Sprite = Container.extend({
-        pixiConstructor: function () { return new PIXI.Sprite(); },
+        pixiConstructor: null,
         props: {
             anchor: { type: PIXI.ObservablePoint },
-            /** Test comment on prop */
+            /** Path to an atlas (JSON file) which contains the sprite's texture */
             atlas: { type: String },
             blendMode: { type: Number },
             pluginName: { type: String },
@@ -271,12 +292,14 @@
                         }
                     },
                     onLoad: function (value, resources) {
-                        if (this.$props.atlas) {
-                            this.$pixi.object.texture =
-                                resources[this.$props.atlas].textures[value];
+                        var texture = this.$props.atlas
+                            ? resources[this.$props.atlas].textures[value]
+                            : resources[value].texture;
+                        if (this.$pixi && this.$pixi.object) {
+                            this.$pixi.object.texture = texture;
                         }
                         else {
-                            this.$pixi.object.texture = resources[value].texture;
+                            this.$pixiStartRendering(new PIXI.Sprite(texture));
                         }
                     }
                 }
@@ -285,18 +308,41 @@
         })
     });
 
+    /**
+     * @example
+     * <template>
+     *   <pixi-application :width="300" :height="300" :background-color="0x6df7b1">
+     *     <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="gabeRun" :x="100" :y="100" :width="48" :height="48"></pixi-extras-animated-sprite>
+     *     <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="maniRun" :x="150" :y="150" :width="48" :height="48"></pixi-extras-animated-sprite>
+     *   </pixi-application>
+     * </template>
+     *
+     * <script>
+     * export default {
+     *   data() {
+     *     return {
+     *       gabeRun: [1, 2, 3, 4, 5, 6, 7].map(n => `gabe-idle-run_0${n}.png`),
+     *       maniRun: [1, 2, 3, 4, 5, 6, 7].map(n => `mani-idle-run_0${n}.png`)
+     *     }
+     *   }
+     * }
+     * </script>
+     */
     var AnimatedSprite = Sprite.extend({
-        pixiConstructor: function () { return new PIXI.extras.AnimatedSprite([]); },
+        pixiConstructor: null,
         props: {
             animationSpeed: { type: Number },
-            /** Test comment on prop */
-            atlas: { type: String },
+            /**
+             * Path to an atlas (JSON file) which contains the textures for the sprite. Unlike plain Pixi,
+             * this must be specified and must contain all the textures in the animation
+             */
+            atlas: { type: String, required: true },
             loop: { type: Boolean },
             onComplete: { type: Function },
             onFrameChange: { type: Function },
             onLoop: { type: Function },
             playing: { type: Boolean },
-            textures: { type: Array }
+            textures: { type: Array, required: true }
         },
         watch: generateWatchers({
             animationSpeed: basicWatcher,
@@ -316,7 +362,13 @@
                     },
                     onLoad: function (value, resources) {
                         var _this = this;
-                        this.$pixi.object.textures = value.map(function (texture) { return resources[_this.$props.atlas].textures[texture]; });
+                        var textures = value.map(function (texture) { return resources[_this.$props.atlas].textures[texture]; });
+                        if (this.$pixi && this.$pixi.object) {
+                            this.$pixi.object.textures = textures;
+                        }
+                        else {
+                            this.$pixiStartRendering(new PIXI.extras.AnimatedSprite(textures));
+                        }
                     }
                 }
             }

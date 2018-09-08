@@ -68,15 +68,36 @@ export default Vue.extend({
         y: basicWatcher
     }),
     beforeCreate: function () {
-        this.$pixi = { object: this.$options.pixiConstructor() };
-        this.$parent.$pixiAddChild(this);
+        if (this.$options.pixiConstructor) {
+            this.$pixiStartRendering(this.$options.pixiConstructor());
+        }
     },
     beforeDestroy: function () {
-        this.$parent.$pixiRemoveChild(this);
+        if (this.$pixi && this.$pixi.object) {
+            this.$parent.$pixiRemoveChild(this);
+        }
     },
     methods: {
+        $pixiStartRendering: function (object) {
+            if (this.$pixi && this.$pixi.object) {
+                throw "$pixiStartRendering can only be called once";
+            }
+            this.$pixi = Object.assign({ object: object }, this.$pixi);
+            this.$emit("pixiStarted", object);
+            this.$off("pixiStarted");
+            this.$parent.$pixiAddChild(this);
+        },
+        $pixiWithObject: function (callback) {
+            if (this.$pixi && this.$pixi.object) {
+                callback(this.$pixi.object);
+            }
+            else {
+                this.$pixi = this.$pixi || {};
+                this.$on("pixiStarted", callback);
+            }
+        },
         $pixiLoadResource: function (name, callback) {
-            this.$parent.$pixiLoadResource(name, callback);
+            return this.$parent.$pixiLoadResource(name, callback);
         }
     }
 });

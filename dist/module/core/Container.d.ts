@@ -4,6 +4,8 @@ declare const _default: VueConstructor<{
     width: number;
     height: number;
 } & {
+    $pixiStartRendering(object: PIXI.DisplayObject): void;
+    $pixiWithObject(callback: (object: PIXI.DisplayObject) => void): void;
     $pixiLoadResource(name: string, callback: import("../resourceLoader").LoadCallback): void;
 } & {
     alpha: number;

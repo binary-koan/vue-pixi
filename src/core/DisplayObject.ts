@@ -53,7 +53,7 @@ export default Vue.extend({
         },
         onLoad(this: Vue, value: boolean) {
           // Wait for other resources, e.g. textures, to be applied
-          this.$nextTick(() => (this.$pixi!.object.cacheAsBitmap = value))
+          this.$nextTick(() => (this.$pixi!.object!.cacheAsBitmap = value))
         }
       }
     },
@@ -76,17 +76,41 @@ export default Vue.extend({
   }),
 
   beforeCreate() {
-    this.$pixi = { object: this.$options.pixiConstructor!() }
-    this.$parent.$pixiAddChild!(this)
+    if (this.$options.pixiConstructor) {
+      this.$pixiStartRendering!(this.$options.pixiConstructor())
+    }
   },
 
   beforeDestroy() {
-    this.$parent.$pixiRemoveChild!(this)
+    if (this.$pixi && this.$pixi.object) {
+      this.$parent.$pixiRemoveChild!(this)
+    }
   },
 
   methods: {
+    $pixiStartRendering(object: PIXI.DisplayObject) {
+      if (this.$pixi && this.$pixi.object) {
+        throw "$pixiStartRendering can only be called once"
+      }
+
+      this.$pixi = Object.assign({ object: object }, this.$pixi)
+      this.$emit("pixiStarted", object)
+      this.$off("pixiStarted")
+
+      this.$parent.$pixiAddChild!(this)
+    },
+
+    $pixiWithObject(callback: (object: PIXI.DisplayObject) => void) {
+      if (this.$pixi && this.$pixi.object) {
+        callback(this.$pixi.object)
+      } else {
+        this.$pixi = this.$pixi || {}
+        this.$on("pixiStarted", callback)
+      }
+    },
+
     $pixiLoadResource(name: string, callback: LoadCallback) {
-      this.$parent.$pixiLoadResource!(name, callback)
+      return this.$parent.$pixiLoadResource!(name, callback)
     }
   }
 })

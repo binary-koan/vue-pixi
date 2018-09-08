@@ -72,7 +72,7 @@ Setting the anchor to 1,1 would mean the texture's origin point will be the bott
 
 </td>
 <td>
-Test comment on prop
+Path to an atlas (JSON file) which contains the sprite's texture
 </td>
 </tr>
 

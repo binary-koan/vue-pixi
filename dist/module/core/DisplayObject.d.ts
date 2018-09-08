@@ -2,6 +2,8 @@ import Vue, { VueConstructor } from "vue";
 import * as PIXI from "pixi.js";
 import { LoadCallback } from "../resourceLoader";
 declare const _default: VueConstructor<{
+    $pixiStartRendering(object: PIXI.DisplayObject): void;
+    $pixiWithObject(callback: (object: PIXI.DisplayObject) => void): void;
     $pixiLoadResource(name: string, callback: LoadCallback): void;
 } & {
     alpha: number;

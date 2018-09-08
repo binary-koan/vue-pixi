@@ -11,18 +11,17 @@ export function generateWatchers(props) {
     });
     return watchers;
 }
-export function ignoreValueChange(context, name) {
-    return (!context.$pixi ||
-        !context.$vnode.componentOptions.propsData ||
-        !context.$vnode.componentOptions.propsData.hasOwnProperty(name));
+export function propValueSpecified(context, name) {
+    return (context.$vnode.componentOptions.propsData &&
+        context.$vnode.componentOptions.propsData.hasOwnProperty(name));
 }
 export function basicWatcher(name) {
     return {
         immediate: true,
         handler: function (value) {
-            if (ignoreValueChange(this, name))
+            if (!propValueSpecified(this, name))
                 return;
-            this.$pixi.object[name] = value;
+            this.$pixiWithObject(function (object) { return (object[name] = value); });
         }
     };
 }
@@ -42,9 +41,8 @@ export function resourceWatcher(name, _a) {
         immediate: true,
         handler: function (value) {
             var _this = this;
-            if (ignoreValueChange(this, name)) {
+            if (!propValueSpecified(this, name))
                 return;
-            }
             this.$pixiLoadResource(loadName.call(this, value), function (resources) {
                 onLoad.call(_this, value, resources);
             });
@@ -85,23 +83,25 @@ export function eventWatcher(name) {
         immediate: true,
         handler: function (value) {
             var _this = this;
-            if (ignoreValueChange(this, name))
+            if (!propValueSpecified(this, name))
                 return;
-            var pixi = this.$pixi;
-            pixi.object[name] = value;
-            if (value) {
-                pixi.eventHandlers = {};
-                BASIC_EVENTS.forEach(function (event) {
-                    pixi.eventHandlers[event] = _this.$emit.bind(_this, event);
-                    pixi.object.on(event, pixi.eventHandlers[event]);
-                });
-            }
-            else if (pixi.eventHandlers) {
-                BASIC_EVENTS.forEach(function (event) {
-                    pixi.object.off(event, pixi.eventHandlers[event]);
-                });
-                pixi.eventHandlers = undefined;
-            }
+            this.$pixiWithObject(function (object) {
+                var pixi = _this.$pixi;
+                object[name] = value;
+                if (value) {
+                    pixi.eventHandlers = {};
+                    BASIC_EVENTS.forEach(function (event) {
+                        pixi.eventHandlers[event] = _this.$emit.bind(_this, event);
+                        object.on(event, pixi.eventHandlers[event]);
+                    });
+                }
+                else if (pixi.eventHandlers) {
+                    BASIC_EVENTS.forEach(function (event) {
+                        object.off(event, pixi.eventHandlers[event]);
+                    });
+                    pixi.eventHandlers = undefined;
+                }
+            });
         }
     };
 }
