@@ -33,6 +33,20 @@
             }
         };
     }
+    function customWatcher(name, _a) {
+        var handler = _a.handler;
+        return {
+            immediate: true,
+            handler: function (value, oldValue) {
+                var _this = this;
+                if (!propValueSpecified(this, name))
+                    return;
+                this.$pixiWithObject(function (object) {
+                    return handler.call(_this, object, value, oldValue);
+                });
+            }
+        };
+    }
     function resourceWatcher(name, _a) {
         var loadName = _a.loadName, onLoad = _a.onLoad;
         loadName =
@@ -315,8 +329,26 @@
      * @example
      * <template>
      *   <pixi-application :width="300" :height="300" :background-color="0x6df7b1">
-     *     <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="gabeRun" :x="100" :y="100" :width="48" :height="48"></pixi-extras-animated-sprite>
-     *     <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="maniRun" :x="150" :y="150" :width="48" :height="48"></pixi-extras-animated-sprite>
+     *     <pixi-extras-animated-sprite
+     *       atlas="assets/sprites.json"
+     *       :textures="gabeRun"
+     *       :x="100"
+     *       :y="100"
+     *       :width="48"
+     *       :height="48"
+     *       :playing="true"
+     *       :animation-speed="0.1"
+     *     ></pixi-extras-animated-sprite>
+     *     <pixi-extras-animated-sprite
+     *       atlas="assets/sprites.json"
+     *       :textures="maniRun"
+     *       :x="150"
+     *       :y="150"
+     *       :width="48"
+     *       :height="48"
+     *       :playing="true"
+     *       :animation-speed="0.1"
+     *     ></pixi-extras-animated-sprite>
      *   </pixi-application>
      * </template>
      *
@@ -324,8 +356,8 @@
      * export default {
      *   data() {
      *     return {
-     *       gabeRun: [1, 2, 3, 4, 5, 6, 7].map(n => `gabe-idle-run_0${n}.png`),
-     *       maniRun: [1, 2, 3, 4, 5, 6, 7].map(n => `mani-idle-run_0${n}.png`)
+     *       gabeRun: [2, 3, 4, 5, 6, 7].map(n => `gabe-idle-run_0${n}.png`),
+     *       maniRun: [2, 3, 4, 5, 6, 7].map(n => `mani-idle-run_0${n}.png`)
      *     }
      *   }
      * }
@@ -352,6 +384,19 @@
             loop: basicWatcher,
             onComplete: basicWatcher,
             onFrameChange: basicWatcher,
+            playing: {
+                generator: customWatcher,
+                options: {
+                    handler: function (object, value) {
+                        if (value) {
+                            object.play();
+                        }
+                        else {
+                            object.stop();
+                        }
+                    }
+                }
+            },
             textures: {
                 generator: resourceWatcher,
                 options: {

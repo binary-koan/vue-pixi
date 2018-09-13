@@ -25,6 +25,20 @@ export function basicWatcher(name) {
         }
     };
 }
+export function customWatcher(name, _a) {
+    var handler = _a.handler;
+    return {
+        immediate: true,
+        handler: function (value, oldValue) {
+            var _this = this;
+            if (!propValueSpecified(this, name))
+                return;
+            this.$pixiWithObject(function (object) {
+                return handler.call(_this, object, value, oldValue);
+            });
+        }
+    };
+}
 export function resourceWatcher(name, _a) {
     var loadName = _a.loadName, onLoad = _a.onLoad;
     loadName =

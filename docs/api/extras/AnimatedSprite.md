@@ -26,8 +26,26 @@ let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 /*vue*/
 <template>
   <pixi-application :width="300" :height="300" :background-color="0x6df7b1">
-    <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="gabeRun" :x="100" :y="100" :width="48" :height="48"></pixi-extras-animated-sprite>
-    <pixi-extras-animated-sprite atlas="assets/sprites.json" :textures="maniRun" :x="150" :y="150" :width="48" :height="48"></pixi-extras-animated-sprite>
+    <pixi-extras-animated-sprite
+      atlas="assets/sprites.json"
+      :textures="gabeRun"
+      :x="100"
+      :y="100"
+      :width="48"
+      :height="48"
+      :playing="true"
+      :animation-speed="0.1"
+    ></pixi-extras-animated-sprite>
+    <pixi-extras-animated-sprite
+      atlas="assets/sprites.json"
+      :textures="maniRun"
+      :x="150"
+      :y="150"
+      :width="48"
+      :height="48"
+      :playing="true"
+      :animation-speed="0.1"
+    ></pixi-extras-animated-sprite>
   </pixi-application>
 </template>
 
@@ -35,8 +53,8 @@ let mc = new PIXI.AnimatedSprite(textureArray);</code></pre>
 export default {
   data() {
     return {
-      gabeRun: [1, 2, 3, 4, 5, 6, 7].map(n => `gabe-idle-run_0${n}.png`),
-      maniRun: [1, 2, 3, 4, 5, 6, 7].map(n => `mani-idle-run_0${n}.png`)
+      gabeRun: [2, 3, 4, 5, 6, 7].map(n => `gabe-idle-run_0${n}.png`),
+      maniRun: [2, 3, 4, 5, 6, 7].map(n => `mani-idle-run_0${n}.png`)
     }
   }
 }

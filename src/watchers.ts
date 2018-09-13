@@ -44,6 +44,31 @@ export function basicWatcher(name: string): WatchOptionsWithHandler<any> {
   }
 }
 
+export function customWatcher<T>(
+  name: string,
+  {
+    handler
+  }: {
+    handler: (
+      this: Vue,
+      pixiObject: PIXI.DisplayObject,
+      newValue: T,
+      oldValue: T
+    ) => any
+  }
+): WatchOptionsWithHandler<T> {
+  return {
+    immediate: true,
+    handler(this: Vue, value, oldValue) {
+      if (!propValueSpecified(this as any, name)) return
+
+      this.$pixiWithObject!(object =>
+        handler.call(this, object, value, oldValue)
+      )
+    }
+  }
+}
+
 export function resourceWatcher<T>(
   name: string,
   {
