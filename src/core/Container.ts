@@ -4,7 +4,8 @@ import * as PIXI from "pixi.js"
 import Vue, { VueConstructor } from "vue"
 
 export default DisplayObject.extend({
-  pixiConstructor: () => new PIXI.Container(),
+  pixiType: PIXI.Container,
+  pixiCreateImmediately: true,
 
   props: {
     width: { type: Number },

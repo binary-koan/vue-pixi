@@ -9,6 +9,9 @@ import {
 } from "../watchers"
 
 export default Vue.extend({
+  pixiType: PIXI.DisplayObject,
+  pixiCreateImmediately: true,
+
   props: {
     alpha: { type: Number },
     buttonMode: { type: Boolean },
@@ -76,8 +79,8 @@ export default Vue.extend({
   }),
 
   beforeCreate() {
-    if (this.$options.pixiConstructor) {
-      this.$pixiStartRendering!(this.$options.pixiConstructor())
+    if (this.$options.pixiCreateImmediately) {
+      this.$pixiStartRendering!(new this.$options.pixiType!())
     }
   },
 

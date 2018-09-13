@@ -1,15 +1,6 @@
 import * as PIXI from "pixi.js";
 import Vue, { VueConstructor } from "vue";
 declare const _default: VueConstructor<{
-    animationSpeed: number;
-    atlas: string;
-    loop: boolean;
-    onComplete: Function;
-    onFrameChange: Function;
-    onLoop: Function;
-    playing: boolean;
-    textures: {}[];
-} & {
     anchor: PIXI.ObservablePoint;
     atlas: string;
     blendMode: number;

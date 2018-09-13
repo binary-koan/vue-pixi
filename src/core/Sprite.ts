@@ -28,7 +28,8 @@ import Vue, { VueConstructor } from "vue"
  * </script>
  */
 export default Container.extend({
-  pixiConstructor: null,
+  pixiType: PIXI.Sprite,
+  pixiCreateImmediately: false,
 
   props: {
     anchor: { type: PIXI.ObservablePoint },
@@ -64,7 +65,7 @@ export default Container.extend({
           if (this.$pixi && this.$pixi.object) {
             this.$pixi.object.texture = texture
           } else {
-            this.$pixiStartRendering!(new PIXI.Sprite(texture))
+            this.$pixiStartRendering!(new this.$options.pixiType!(texture))
           }
         }
       }

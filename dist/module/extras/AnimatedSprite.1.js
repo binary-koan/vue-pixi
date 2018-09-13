@@ -40,7 +40,7 @@ import * as PIXI from "pixi.js";
  * </script>
  */
 export default Sprite.extend({
-    pixiType: PIXI.extras.AnimatedSprite,
+    pixiConstructor: null,
     props: {
         animationSpeed: { type: Number },
         /**

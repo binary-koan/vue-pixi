@@ -28,6 +28,9 @@ declare module "vue/types/vue" {
 }
 declare module "vue/types/options" {
     interface ComponentOptions<V extends Vue> {
-        pixiConstructor?: (() => PIXI.DisplayObject) | null;
+        pixiType?: {
+            new (...args: any[]): PIXI.DisplayObject;
+        };
+        pixiCreateImmediately?: Boolean;
     }
 }

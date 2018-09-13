@@ -2,6 +2,8 @@ import Vue from "vue";
 import * as PIXI from "pixi.js";
 import { basicWatcher, resourceWatcher, eventWatcher, generateWatchers } from "../watchers";
 export default Vue.extend({
+    pixiType: PIXI.DisplayObject,
+    pixiCreateImmediately: true,
     props: {
         alpha: { type: Number },
         buttonMode: { type: Boolean },
@@ -68,8 +70,8 @@ export default Vue.extend({
         y: basicWatcher
     }),
     beforeCreate: function () {
-        if (this.$options.pixiConstructor) {
-            this.$pixiStartRendering(this.$options.pixiConstructor());
+        if (this.$options.pixiCreateImmediately) {
+            this.$pixiStartRendering(new this.$options.pixiType());
         }
     },
     beforeDestroy: function () {

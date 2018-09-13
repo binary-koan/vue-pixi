@@ -2,7 +2,8 @@ import DisplayObject from "./DisplayObject";
 import { basicWatcher, generateWatchers } from "../watchers";
 import * as PIXI from "pixi.js";
 export default DisplayObject.extend({
-    pixiConstructor: function () { return new PIXI.Container(); },
+    pixiType: PIXI.Container,
+    pixiCreateImmediately: true,
     props: {
         width: { type: Number },
         height: { type: Number }

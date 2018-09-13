@@ -7,6 +7,7 @@
     * [PixiDisplayObject](api/DisplayObject.md)
     * [PixiSprite](api/Sprite.md)
     * [extras.PixiAnimatedSprite](api/extras/AnimatedSprite.md)
+    * [extras.PixiTilingSprite](api/extras/TilingSprite.md)
 <!-- /API -->
 
 * After

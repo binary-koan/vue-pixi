@@ -47,7 +47,7 @@ import Vue, { VueConstructor } from "vue"
  * </script>
  */
 export default Sprite.extend({
-  pixiConstructor: null,
+  pixiType: PIXI.extras.AnimatedSprite,
 
   props: {
     animationSpeed: { type: Number },
